@@ -1,5 +1,15 @@
 import { useState } from "react"
 
+function FruitsCard({nama, harga, stock} : {nama: string, harga:number, stock:number} ){
+
+  return(
+    <div>
+      <p>Nama: {nama}</p>
+      <p>Harga: {harga}</p>
+      <p>Stock: {stock}</p>
+    </div>
+  )
+}
 export default function App() {
   const nama: string = "Aziz"
   const umur: number = 25
@@ -13,6 +23,12 @@ export default function App() {
     { id: 1, nama: 'Apel', harga: 5000 },
     { id: 2, nama: 'Mangga', harga: 8000 },
     { id: 3, nama: 'Jeruk', harga: 6000 },
+  ]
+  const fruits_2 = [
+    { id: 1, nama: 'Apel', harga: 5000, stock: 10 },
+    { id: 2, nama: 'Mangga', harga: 8000, stock: 11 },
+    { id: 3, nama: 'Jeruk', harga: 6000, stock: 40 },
+    { id: 4, nama: 'Kiwi', harga: 9000, stock: 21 },
   ]
   return (
     <div>
@@ -75,6 +91,17 @@ export default function App() {
             </div>
           ))}
         </div>
+      </div>
+      <div>
+        <h1>Ini Daftar Buah (komponen)</h1>
+        {fruits_2.map((item) =>
+          <FruitsCard
+            key={item.id}
+            nama={item.nama}
+            harga={item.harga}
+            stock={item.stock}
+          />
+        )}
       </div>
     </div>
   )
