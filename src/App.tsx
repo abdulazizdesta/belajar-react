@@ -7,7 +7,34 @@ interface Post {
   body: string
 }
 
+interface Spek {
+  machine?: string
+  year?: number
+}
+
+interface Kendaraan {
+  id: number
+  name: string
+  price: number
+  color?: string
+  spek?: Spek
+}
+
 export default function App() {
+  const vehicles: Kendaraan[] = [
+    { id: 1, 
+      name: 'BMW', 
+      price: 1000000,
+      spek: {
+        machine: 'V8',
+        year: 1999,
+      } 
+    },
+    { id: 2, 
+      name: 'Mercedes Benz', 
+      price: 18000000, 
+      color: 'merah' },
+  ]
   const nama: string = "Aziz"
   const umur: number = 25
   const gelar: string = "phd"
@@ -36,30 +63,48 @@ export default function App() {
   // }, [])
 
   useEffect(() => {
-      fetch('https://jsonplaceholder.typicode.com/posts?_limit=5')
+    fetch('https://jsonplaceholder.typicode.com/posts?_limit=5')
       .then((response) => response.json())
       .then((data: Post[]) => {
         setPosts(data)
         setLoading(false)
-      })    
+      })
   }, [])
 
   return (
     <div>
       <div>
+        <p>{vehicles[1].name} dengan harga {vehicles[1].price} {vehicles[1].color && <p>mempunyai warna {vehicles[1].color}</p>}</p>
+        <br />
+        {vehicles.map((vehicle) => (
+          <div key={vehicle.id}>
+            <p>Nama kendaraan: {vehicle.name} dengan harga: {vehicle.price}</p>
+            <p>Spesifikasi:
+              {vehicle.spek ? 
+              <div> 
+                {vehicle.color ? <p>Warna: {vehicle.color}</p> : <p>Warna: belum ada warna</p>}
+                <p>Mesin: {vehicle.spek.machine}</p>
+                <p>Tahun rilis: {vehicle.spek.year}</p>
+              </div>
+               : "Belum ada spesifikasi" }
+            </p>
+          </div>
+        ))}
+      </div>
+      <div>
         <h1>
           Data
         </h1>
         {loading ? (<p>loading...</p>)
-         : (
-          posts.map((post) =>(
-            <div key={post.id}>
+          : (
+            posts.map((post) => (
+              <div key={post.id}>
                 <h3>{post.title}</h3>
                 <p>{post.body}</p>
                 <hr />
-            </div>
-          ))
-         )
+              </div>
+            ))
+          )
         }
       </div>
       <div>
