@@ -1,15 +1,6 @@
 import { useState } from "react"
+import FruitsCard from "./FruitsCard"
 
-function FruitsCard({nama, harga, stock} : {nama: string, harga:number, stock:number} ){
-
-  return(
-    <div>
-      <p>Nama: {nama}</p>
-      <p>Harga: {harga}</p>
-      <p>Stock: {stock}</p>
-    </div>
-  )
-}
 export default function App() {
   const nama: string = "Aziz"
   const umur: number = 25
