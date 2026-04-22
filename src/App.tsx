@@ -1,5 +1,11 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import FruitsCard from "./FruitsCard"
+
+interface Post {
+  id: number
+  title: string
+  body: string
+}
 
 export default function App() {
   const nama: string = "Aziz"
@@ -21,8 +27,41 @@ export default function App() {
     { id: 3, nama: 'Jeruk', harga: 6000, stock: 40 },
     { id: 4, nama: 'Kiwi', harga: 9000, stock: 21 },
   ]
+  const [posts, setPosts] = useState<Post[]>([])
+  const [loading, setLoading] = useState(true)
+  /* Simulasi Fetch API Menggunakan useEffect */
+  // useEffect(() => {
+  //   setTimeout(() =>
+  //     setPesan("Data sudah siap"), 5000)
+  // }, [])
+
+  useEffect(() => {
+      fetch('https://jsonplaceholder.typicode.com/posts?_limit=5')
+      .then((response) => response.json())
+      .then((data: Post[]) => {
+        setPosts(data)
+        setLoading(false)
+      })    
+  }, [])
+
   return (
     <div>
+      <div>
+        <h1>
+          Data
+        </h1>
+        {loading ? (<p>loading...</p>)
+         : (
+          posts.map((post) =>(
+            <div key={post.id}>
+                <h3>{post.title}</h3>
+                <p>{post.body}</p>
+                <hr />
+            </div>
+          ))
+         )
+        }
+      </div>
       <div>
         <h1>Halo React</h1>
         <p>ini project pertama gweh</p>
@@ -94,6 +133,10 @@ export default function App() {
           />
         )}
       </div>
+      {/* Use from useEffect Declaration */}
+      {/* <div>
+        <p>{pesan}</p>
+      </div> */}
     </div>
   )
 }
