@@ -1,10 +1,10 @@
-interface spect {
+export interface spect {
     machine: string
     release: number
     type: string
 }
 
-interface VehicleProps {
+export interface VehicleProps {
     id: number
     name: string
     color?: string
@@ -28,6 +28,8 @@ export function VehicleDetails({ name, color, specification}: VehicleProps) {
                     <p>Tipe: {specification.type}</p>
                 </div>
             }
+            <p>----------</p>
+            <br />
         </div>
     )
 }
