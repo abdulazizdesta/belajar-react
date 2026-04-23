@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import FruitsCard from "./FruitsCard"
+import { VehicleDetails } from "./VehicleCard"
 
 interface Post {
   id: number
@@ -73,6 +74,7 @@ export default function App() {
 
   return (
     <div>
+      
       <div>
         <p>{vehicles[1].name} dengan harga {vehicles[1].price} {vehicles[1].color && <p>mempunyai warna {vehicles[1].color}</p>}</p>
         <br />
