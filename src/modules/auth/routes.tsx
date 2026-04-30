@@ -1,5 +1,5 @@
 import Login from './pages/Login'
-// import Register from './pages/Register'
+import Register from './pages/Register'
 
 const authRoutes = [
 
@@ -7,6 +7,10 @@ const authRoutes = [
         path: "/",
         element: <Login/>
     },
+    {
+        path: "/register",
+        element: <Register/>
+    }
 
 ]
 
