@@ -1,3 +1,4 @@
+import ProtectedRoute from '../../components/ProtectedRoute'
 import Home from './pages/Home'
 // import Register from './pages/Register'
 
@@ -5,7 +6,10 @@ const homeRoutes = [
 
     {
         path: "/home",
-        element: <Home/>
+        element: 
+        <ProtectedRoute>
+            <Home/>
+        </ProtectedRoute>
     },
 
 ]

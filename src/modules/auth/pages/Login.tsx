@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../../hooks/useAuth";
 import axios from "axios";
 
 interface FormLoginProps {
@@ -14,6 +15,7 @@ export default function Login() {
     })
 
     const navigate = useNavigate()
+    const { login } = useAuth()
     const [loading, setLoading] = useState<boolean>(false)
     const handleChange = (e: any) => {
         setForm({ ...form, [e.target.name]: e.target.value })
@@ -28,10 +30,11 @@ export default function Login() {
                 data: form,
             });
 
-            localStorage.setItem('token', response.data.data.token)
+            login(response.data.data.token)
             navigate('/home')
         } catch (error) {
             console.error(error, 'Error')
+            setLoading(false)
         }
     }
     return (
@@ -54,7 +57,7 @@ export default function Login() {
                         />
                     </div>
                     <div className="flex flex-col gap-2 mb-2">
-                        <label htmlFor="email">Email</label>
+                        <label htmlFor="email">Password</label>
                         <input
                             type="password"
                             name="password"
