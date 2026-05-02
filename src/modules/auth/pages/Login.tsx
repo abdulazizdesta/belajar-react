@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../../../hooks/useAuth";
-import axios from "axios";
+import api from "../../../services/api";
 
 interface FormLoginProps {
     email: string
@@ -13,6 +13,7 @@ export default function Login() {
         email: "",
         password: "",
     })
+    const [error, setError] = useState<string | null>(null)
 
     const navigate = useNavigate()
     const { login } = useAuth()
@@ -24,112 +25,83 @@ export default function Login() {
         e.preventDefault()
         setLoading(true)
         try {
-            const response = await axios({
-                method: "post",
-                url: "http://localhost:8000/api/auth/login",
-                data: form,
-            });
-
-            login(response.data.data.token)
+            const response = await api.post('/auth/login', form)
+            login(response.data.data.token, response.data.data.role, response.data.data.name)
             navigate('/home')
-        } catch (error) {
-            console.error(error, 'Error')
+        } catch (error: any) {
+            const errors = error.response?.data?.message
+            setError(errors ?  errors : "Something went wrong")
+        } finally {
             setLoading(false)
         }
     }
     return (
         <>
-            <div className="flex justify-center items-center h-screen bg-gradient-to-tr from-slate-900 to-gray-800">
-                <div className="bg-gray-900 border-solid border-gray
-                                shadow-lg shadow-cyan-500/30
-                                w-sm p-5
-                                md:max-w-md md:p-10
-                                rounded-xl shadow-lg ">
-                    <h2 className="text-white text-3xl font-bold text-center font-cormorant">Login woi</h2>
-                    <div className="flex flex-col gap-2 mb-2">
-                        <label htmlFor="email">Email</label>
-                        <input
-                            type="email"
-                            name="email"
-                            onChange={handleChange}
-                            placeholder="youremail@email.com"
-                            className="text-white border border-gray-400 px-2 py-2 mb-2 w-full rounded-xl"
-                        />
-                    </div>
-                    <div className="flex flex-col gap-2 mb-2">
-                        <label htmlFor="email">Password</label>
-                        <input
-                            type="password"
-                            name="password"
-                            onChange={handleChange}
-                            className="text-white border border-gray-400 px-2 py-2 mb-2 w-full rounded-xl"
-                        />
-                    </div>
-                    <p className="text-gray-500 text-xs mt-4">
-                        Don't have account?
-                        <span
-                            className="text-indigo-400 cursor-pointer mx-1"
-                            onClick={() => navigate('/register')}>
-                            Register
-                        </span>
-                    </p>
-                    <div className="flex justify-center gap-4">
-                        <button
-                            className="bg-slate-600 text-white p-2 w-full rounded-xl mt-8 cursor-pointer"
-                            onClick={handleSubmit}
-                            disabled={loading}>
-                            Log in
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <div className="flex h-screen bg-slate-950 text-white">
 
-            {/* <div className="flex flexbox h-screen">
-                <div className="bg-slate-700 w-full flex justify-center items-center">
-                    <div className="bg-white shadow w-full mx-6 lg:mx-32 p-8 rounded-xl">
-                        <h1 className="color-slate-900 text-5xl mb-1 font-['Cormorant_Garamond']">Login</h1>
-                        <p className="text-gray-500 font-['DM Sans] mb-4">
-                            Please enter your email and password
-                        </p>
-                        <div className="flex flex-col gap-2 mb-2">
-                            <label htmlFor="email">Email</label>
+                {/* kiri */}
+                <div className="flex flex-1 flex-col justify-center items-center px-8">
+                    <div className="w-full max-w-sm">
+                        <p className="text-slate-500 text-xs tracking-widest uppercase mb-2">Welcome back</p>
+                        <h1 className="font-sans text-slate-100 text-5xl font-semibold mb-8">distreaming</h1>
+
+                        {error && (
+                            <div className="bg-red-950 border border-red-800 text-red-400 text-sm px-4 py-2.5 rounded-lg mb-4">
+                                {error}
+                            </div>
+                        )}
+
+                        <div className="flex flex-col gap-1 mb-4">
+                            <label className="text-slate-400 text-sm">Email</label>
                             <input
                                 type="email"
                                 name="email"
                                 onChange={handleChange}
                                 placeholder="youremail@email.com"
-                                className="border border-gray-400 px-2 py-2 mb-2 w-full rounded-xl"
+                                className="bg-slate-900 border border-slate-700 text-white text-sm px-4 py-2.5 rounded-lg focus:outline-none focus:border-slate-500"
                             />
                         </div>
-                        <div className="flex flex-col gap-2">
-                            <label htmlFor="password">Password</label>
+
+                        <div className="flex flex-col gap-1 mb-6">
+                            <label className="text-slate-400 text-sm">Password</label>
                             <input
                                 type="password"
                                 name="password"
                                 onChange={handleChange}
-                                placeholder="Enter your password"
-                                className="border border-gray-400 px-2 py-2 mb-2 w-full rounded-xl"
+                                className="bg-slate-900 border border-slate-700 text-white text-sm px-4 py-2.5 rounded-lg focus:outline-none focus:border-slate-500"
                             />
                         </div>
-                        <p className="text-gray-500 text-xs mt-4">
-                            Don't have account?
+
+                        <button
+                            onClick={handleSubmit}
+                            disabled={loading}
+                            className="w-full bg-slate-700 hover:bg-slate-600 disabled:opacity-50 text-white text-sm font-medium py-2.5 rounded-lg transition-colors cursor-pointer">
+                            {loading ? "Logging in..." : "Log in"}
+                        </button>
+
+                        <p className="text-slate-600 text-xs text-center mt-6">
+                            Don't have an account?{" "}
                             <span
-                                className="text-indigo-400 cursor-pointer mx-1"
-                                onClick={() => navigate('/register')}>
+                                onClick={() => navigate('/register')}
+                                className="text-slate-400 cursor-pointer hover:text-white transition-colors">
                                 Register
                             </span>
                         </p>
-                        <div className="flex justify-center gap-4">
-                            <button
-                                className="bg-slate-600 text-white p-2 w-full rounded-xl mt-8 cursor-pointer"
-                                onClick={handleSubmit}
-                                disabled={loading}>
-                                Log in
-                            </button>
-                        </div>
                     </div>
                 </div>
-            </div> */}
+
+                {/* kanan */}
+                <div className="hidden md:flex flex-1 bg-slate-900 justify-center items-center relative overflow-hidden">
+                    <div className="relative text-center">
+                        <h2 className="text-slate-300 text-2xl font-medium mb-2">Stream anything.</h2>
+                        <p className="text-slate-600 text-md max-w-xs leading-relaxed">
+                            Your favorite movies and series, all in one place.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            )
         </>
     )
 }
