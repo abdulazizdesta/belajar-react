@@ -32,7 +32,6 @@ interface Meta {
 
 export default function ListMovies() {
     const [movies, setMovies] = useState<MovieProps[]>([])
-    const [activeFilter, setActiveFilter] = useState<string>('all')
     const [meta, setMeta] = useState<Meta>({
         current_page: 1,
         last_page: 1,
@@ -72,8 +71,7 @@ export default function ListMovies() {
             fetchMovies(currentPage)
             toast.success("Movie deleted successfully")
         } catch (error: any) {
-            toast.error("Failed to deletr movie")
-            setError(error)
+            toast.error("Failed to delete movie")
         } finally {
             setDeleteLoading(false)
         }
@@ -81,7 +79,7 @@ export default function ListMovies() {
 
     useEffect(() => {
         fetchMovies(currentPage);
-    }, [currentPage, activeFilter, search]);
+    }, [currentPage, search]);
 
 
 

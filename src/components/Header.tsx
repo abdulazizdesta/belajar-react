@@ -34,7 +34,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                         <p className="px-4 py-2 text-sm text-slate-400">{name}</p>
                         <hr className="border-slate-700" />
                         <button
-                            onClick={() => { logout(); navigate('/login') }}
+                            onClick={() => { logout(); navigate('/') }}
                             className="w-full text-left px-4 py-2 text-sm text-slate-300 hover:bg-slate-700"
                         >
                             Logout

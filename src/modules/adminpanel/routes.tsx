@@ -19,7 +19,7 @@ const adminRoutes = [
         </ProtectedRoute>
     },
     {
-        path: "/admin/movies/:id",
+        path: "/admin/movies/:id/edit",
         element: <ProtectedRoute requiredRole="admin">
             <UpdateMovies />
         </ProtectedRoute>
@@ -32,7 +32,7 @@ const adminRoutes = [
             </ProtectedRoute>
     },
     {
-        path: "/admin/users/:id",
+        path: "/admin/users/:id/edit",
         element: <ProtectedRoute requiredRole="admin">
             <UpdateUsers />
         </ProtectedRoute>

@@ -98,7 +98,6 @@ export default function ListUsers() {
                 <table className="w-full text-sm font-sans">
                     <thead>
                         <tr className="rounded-xl text-slate-500">
-                            <th className="p-3 font-medium">No.</th>
                             <th className="p-3 font-medium">Name</th>
                             <th className="p-3 font-medium">Email</th>
                             <th className="p-3 font-medium">Actions</th>
@@ -118,15 +117,14 @@ export default function ListUsers() {
                                 <td colSpan={4} className="text-center py-10 text-slate-500">No users found</td>
                             </tr>
                         ) : (
-                            users.map((user, index) => (
+                            users.map(user => (
                                 <tr key={user.id} className="text-center border-b border-slate-800 hover:bg-slate-800/30 transition-colors">
-                                    <td className="px-4 py-4 text-slate-500">{(currentPage - 1) * 10 + index + 1}</td>
                                     <td className="px-4 py-4">{user.name}</td>
                                     <td className="px-4 py-4 text-slate-400">{user.email}</td>
                                     <td className="py-2">
                                         <div className="flex gap-4 justify-center">
                                             <Button label="Edit" variant="outline"
-                                                onClick={() => navigate(`/admin/users/${user.id}`)} />
+                                                onClick={() => navigate(`/admin/users/${user.id}/edit`)} />
                                             <Button label="Delete" variant="danger"
                                                 onClick={() => {
                                                     setSelectedId(user.id)

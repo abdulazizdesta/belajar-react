@@ -12,6 +12,13 @@ interface UserForm {
     password_confirmation: string
 }
 
+interface UserUpdateData {
+    name: string
+    email: string
+    password?: string               
+    password_confirmation?: string
+}
+
 export default function UpdateUsers() {
     const { id } = useParams()
     const navigate = useNavigate()
@@ -40,7 +47,7 @@ export default function UpdateUsers() {
 
     useEffect(() => {
         fetchUser()
-    }, [])
+    }, [id])
 
     const handleChange = (e: any) => {
         setForm({ ...form, [e.target.name]: e.target.value })
@@ -49,14 +56,16 @@ export default function UpdateUsers() {
     const handleSubmit = async () => {
         setLoading(true)
         try {
-            await api.patch(`/users/${id}`, {
+            const data: UserUpdateData = {
                 name: form.name,
-                email: form.email,
-                ...(form.password && {
-                    password: form.password,
-                    password_confirmation: form.password_confirmation
-                })
-            })
+                email: form.email
+            }
+
+            if (form.password) {
+                data.password = form.password
+                data.password_confirmation = form.password_confirmation
+            }
+            await api.patch(`/users/${id}/edit`, data)
             toast.success("User updated successfully")
             navigate('/admin/users')
         } catch (error: any) {
@@ -106,7 +115,6 @@ export default function UpdateUsers() {
 
                 <div className="flex flex-col gap-1 mb-5">
                     <label htmlFor="password" className="text-slate-400 text-sm">
-                        New Password <span className="text-slate-600 text-xs">(kosongkan jika tidak ingin ganti)</span>
                     </label>
                     <input
                         id="password"
