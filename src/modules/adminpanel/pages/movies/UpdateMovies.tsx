@@ -109,7 +109,7 @@ export default function UpdateMovies() {
                         onClick={() => {
                             navigate("/admin/movies")
                         }} />
-                    <h2 className='text-2xl'>Input New Movie</h2>
+                    <h2 className='text-2xl'>Update Movie</h2>
                 </div>
                 <div className='flex gap-8 items-start w-full'>
                     {/* Kiri - Form */}
@@ -194,7 +194,7 @@ export default function UpdateMovies() {
 
                         <div className="flex gap-3">
                             <Button label="Cancel" variant="outline" onClick={() => navigate(-1)} />
-                            <Button label="Save Movie" variant="primary" onClick={handleSubmit} disabled={loading} />
+                            <Button label="Save Movie" variant="primary" onClick={handleSubmit} disabled={loading} loading={loading} loadingLabel='Saving...' />
                         </div>
                     </div>
                     {/* Preview — kanan */}

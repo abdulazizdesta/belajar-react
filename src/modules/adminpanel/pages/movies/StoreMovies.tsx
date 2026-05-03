@@ -184,7 +184,7 @@ export default function StoreMovies() {
 
                         <div className="flex gap-3">
                             <Button label="Cancel" variant="outline" onClick={() => navigate(-1)} />
-                            <Button label="Save Movie" variant="primary" onClick={handleSubmit} disabled={loading} />
+                            <Button label="Save Movie" variant="primary" onClick={handleSubmit} disabled={loading} loadingLabel='Saving...' loading={loading}/>
                         </div>
                     </div>
                     {/* Preview — kanan */}
