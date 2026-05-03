@@ -3,8 +3,8 @@ import { useRoutes } from "react-router-dom";
 import authRoutes from "../modules/auth/routes";
 import homeRoutes from "../modules/home/routes";
 import categoriesRoutes from "../modules/categories/route";
-// import productRoutes from "../modules/product/routes";
+import adminRoutes from "../modules/adminpanel/routes";
 
 export default function AppRoutes() {
-  return useRoutes([...authRoutes,...homeRoutes, ...categoriesRoutes])
+  return useRoutes([...authRoutes,...homeRoutes, ...categoriesRoutes,...adminRoutes])
 }

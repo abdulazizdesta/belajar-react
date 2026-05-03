@@ -28,7 +28,7 @@ interface Meta {
     total: number
 }
 
-export default function Home() {
+export default function Categories() {
 
     const [movies, setMovies] = useState<Movie[]>([])
     const [activeFilter, setActiveFilter] = useState<string>('all')
@@ -41,6 +41,7 @@ export default function Home() {
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [categories, setCategories] = useState<Category[]>([])
     const [loading, setLoading] = useState<boolean>(false)
+    const [error, setError] = useState<string | null>(null)
 
     const fechMovieCategories = async () => {
         setLoading(true)
@@ -64,8 +65,11 @@ export default function Home() {
             const response = await api.get('/movies', { params })
             setMovies(response.data.data.data)
             setMeta(response.data.data.meta)
-        } catch (error) {
-            console.log(error)
+        } catch (error: any) {
+            const status = error.status
+            if (status === 401) setError("Session expired, please login again")
+            else if (status === 404) setError("Data not found")
+            else setError("Failed to load movies, please try again")
         } finally {
             setLoading(false)
         }
@@ -115,22 +119,27 @@ export default function Home() {
             </div>
 
             {/* Movie + Loading */}
-            {loading
-                ? (
-                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-8 mt-6">
-                        {Array.from({ length: 6 }).map((_, i) => (
-                            <MovieCardSkeleton key={i} />
-                        ))}
-                    </div>
-                )
-                : (
-                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-8 mt-6">
-                        {movies.map(movie => (
-                            <MovieCard key={movie.id} {...movie} category={movie.category.name} />
-                        ))}
-                    </div>
-                )
-            }
+            {loading ? (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-6">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                        <MovieCardSkeleton key={i} />
+                    ))}
+                </div>
+            ) : error ? (
+                <div className="flex justify-center items-center mt-20 text-slate-500">
+                    <p>{error}</p>
+                </div>
+            ) : movies.length === 0 ? (
+                <div className="flex justify-center items-center mt-20 text-slate-500">
+                    <p>No movies found</p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-6">
+                    {movies.map(movie => (
+                        <MovieCard key={movie.id} {...movie} category={movie.category.name} />
+                    ))}
+                </div>
+            )}
 
             {/* Pagination */}
             <div className="my-8 w-full flex justify-center">
