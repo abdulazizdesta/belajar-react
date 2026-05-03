@@ -4,6 +4,7 @@ import api from "../../../services/api"
 import MovieCard from "../../../components/card/MovieCard"
 import Pagination from "../../../components/Pagination"
 import SearchInput from "../../../components/SearchInput"
+import MovieCardSkeleton from "../../../components/card/MovieCardSkeleton"
 
 
 interface Category {
@@ -39,17 +40,22 @@ export default function Home() {
     const [search, setSearch] = useState<string>('')
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [categories, setCategories] = useState<Category[]>([])
+    const [loading, setLoading] = useState<boolean>(false)
 
     const fechMovieCategories = async () => {
+        setLoading(true)
         try {
             const response = await api.get('categories')
             setCategories(response.data.data.data)
         } catch (error) {
             console.log(error)
+        } finally {
+            setLoading(false)
         }
     }
 
     const fetchMovies = async (page: number) => {
+        setLoading(true)
         try {
             const params: any = { page }
             if (search) params.search = search
@@ -60,6 +66,8 @@ export default function Home() {
             setMeta(response.data.data.meta)
         } catch (error) {
             console.log(error)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -106,20 +114,23 @@ export default function Home() {
                 ))}
             </div>
 
-            {/* Movie */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-18">
-                {movies.map(movie => (
-                    <MovieCard
-                        key={movie.id}
-                        title={movie.title}
-                        rating={movie.rating}
-                        release_year={movie.release_year}
-                        rating_class={movie.rating_class}
-                        category={movie.category.name}
-                        thumbnail={movie.thumbnail}
-                    />
-                ))}
-            </div>
+            {/* Movie + Loading */}
+            {loading
+                ? (
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-8 mt-6">
+                        {Array.from({ length: 6 }).map((_, i) => (
+                            <MovieCardSkeleton key={i} />
+                        ))}
+                    </div>
+                )
+                : (
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-8 mt-6">
+                        {movies.map(movie => (
+                            <MovieCard key={movie.id} {...movie} category={movie.category.name} />
+                        ))}
+                    </div>
+                )
+            }
 
             {/* Pagination */}
             <div className="my-8 w-full flex justify-center">

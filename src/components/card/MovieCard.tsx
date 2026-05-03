@@ -20,7 +20,7 @@ export default function MovieCard({
     return (
         <div className="bg-slate-900 rounded-xl overflow-hidden hover:scale-105 transition-transform cursor-pointer">
             {/* Thumbnail */}
-            <div className="aspect-[3/2] bg-slate-800 flex items-center justify-center">
+            <div className="aspect-[2/3] bg-slate-800 flex items-center justify-center">
                 {thumbnail
                     ? <img src={`http://localhost:8000/storage/${thumbnail}`}
                         alt={title}

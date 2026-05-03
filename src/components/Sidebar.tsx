@@ -82,14 +82,6 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                             <Clapperboard size={16}></Clapperboard>
                             <span>Movies</span>
                         </NavLink>
-                        <NavLink to="/admin/categories"
-                            className={({ isActive }) =>
-                                `px-3 py-2 rounded-lg text-sm transition-colors flex gap-2
-                                ${isActive ? "bg-slate-800 text-white" : "text-slate-400 hover:text-white hover:bg-slate-800/50"}`
-                            }>
-                            <List size={16}></List>
-                            <span>Categories</span>
-                        </NavLink>
                         <NavLink to="/admin/users"
                             className={({ isActive }) =>
                                 `px-3 py-2 rounded-lg text-sm transition-colors flex gap-2
