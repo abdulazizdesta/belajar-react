@@ -12,7 +12,7 @@ export function Header({ onMenuClick }: HeaderProps) {
     const [dropDownOpen, setDropdownOpen] = useState<boolean>(false)
     const navigate = useNavigate()
     return (
-        <header className="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-4 gap-4">
+        <header className="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-end px-4 gap-4">
 
             {/* Hamburger — mobile only */}
             <button
@@ -20,16 +20,6 @@ export function Header({ onMenuClick }: HeaderProps) {
                 className="md:hidden text-slate-400 hover:text-white">
                 <Menu size={20} />
             </button>
-
-            {/* Search */}
-            <div className="flex-1 max-w-sm relative">
-                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-                <input
-                    type="text"
-                    placeholder="Search movies..."
-                    className="w-full bg-slate-800 border border-slate-700 text-white text-sm pl-9 pr-4 py-2 rounded-lg focus:outline-none focus:border-slate-500 placeholder:text-slate-500"
-                />
-            </div>
 
             {/* Profile */}
             <div className="relative">
