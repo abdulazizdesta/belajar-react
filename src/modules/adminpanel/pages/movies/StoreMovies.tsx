@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Layout from '../../../../components/layouts/Layout'
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../../components/Button'
@@ -32,9 +32,8 @@ export default function StoreMovies() {
     })
     const [categories, setCategories] = useState<Category[]>([])
     const [loading, setLoading] = useState<boolean>(false)
-    const [error, setError] = useState<string | null>(null)
 
-    const fechMovieCategories = async () => {
+    const fecthMovieCategories = async () => {
         try {
             const response = await api.get('categories')
             setCategories(response.data.data.data)
@@ -44,7 +43,7 @@ export default function StoreMovies() {
     }
 
     useEffect(() => {
-        fechMovieCategories()
+        fecthMovieCategories()
     }, [])
 
     const handleChange = (e: any) => {
@@ -65,25 +64,16 @@ export default function StoreMovies() {
             await api.post('/movies', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             })
-            setForm({
-                title: '',
-                description: '',
-                rating: '',
-                release_year: '',
-                category_id: '',
-                thumbnail: null
-            })
             toast.success("Movie created successfully")
+            navigate('/admin/movies')
         } catch (error: any) {
             setLoading(false)
             const errors = error.response?.data?.errors
             if (errors) {
                 const firstError = Object.values(errors)[0] as string[]
                 toast.error(firstError[0])
-                setError(firstError[0])
             } else {
                 toast.error("Something Went Wrong")
-                setError("Something went Wrong")
             }
         } finally {
             setLoading(false)
@@ -190,9 +180,9 @@ export default function StoreMovies() {
                     {/* Preview — kanan */}
                     <div className="flex-1 flex flex-col  sticky gap-3 justify-center items-center">
                         <p className="text-slate-400 text-sm">Preview</p>
-                        <div className="fixed-width bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
+                        <div className="bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
                             {/* Thumbnail preview */}
-                            <div className="aspect-[2/3] bg-slate-800 flex items-center justify-center h-98 w-72">
+                            <div className="aspect-[2/3] bg-slate-800 flex items-center justify-center h-96 w-72">
                                 {form.thumbnail
                                     ? <img
                                         src={URL.createObjectURL(form.thumbnail)}

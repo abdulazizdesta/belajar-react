@@ -66,7 +66,7 @@ export default function UpdateMovies() {
     useEffect(() => {
         fetchMovie()
         fechMovieCategories()
-    }, [])
+    }, [id])
 
     const handleChange = (e: any) => {
         setForm({ ...form, [e.target.name]: e.target.value })

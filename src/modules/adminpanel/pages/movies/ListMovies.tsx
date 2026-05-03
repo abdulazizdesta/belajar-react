@@ -56,7 +56,7 @@ export default function ListMovies() {
             setMeta(response.data.data.meta)
         } catch (error: any) {
             toast.error("Ups Something went wrong")
-            setError(error)
+            setError(error.response?.data?.message ?? "Something went wrong")
         } finally {
             setLoading(false)
         }
