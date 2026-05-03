@@ -12,7 +12,7 @@ export function Header({ onMenuClick }: HeaderProps) {
     const [dropDownOpen, setDropdownOpen] = useState<boolean>(false)
     const navigate = useNavigate()
     return (
-        <header className="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-end px-4 gap-4">
+        <header className="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between md:justify-end px-4 gap-4">
 
             {/* Hamburger — mobile only */}
             <button

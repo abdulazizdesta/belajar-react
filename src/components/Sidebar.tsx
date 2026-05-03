@@ -3,9 +3,7 @@ import { useAuth } from "../hooks/useAuth"
 import { NavLink } from "react-router-dom"
 import {
     X, ChevronDown, ChevronUp, Home,
-    Film,
     Bookmark,
-    LayoutGrid,
     Users,
     List,
     Clapperboard
@@ -37,7 +35,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <div className="flex items-center gap-2 px-4 h-16 border-b border-slate-800">
                     <Clapperboard size={24}></Clapperboard>
                     <p className="text-white font-semibold text-lg">distreaming</p>
-                    <button onClick={onClose} className="md:hidden text-slate-400 hover:text-white">
+                    <button onClick={onClose} className="md:hidden text-slate-400 hover:text-white ml-14">
                         <X size={20} />
                     </button>
                 </div>
