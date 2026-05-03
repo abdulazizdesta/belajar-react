@@ -1,73 +1,115 @@
-# React + TypeScript + Vite
+# distreaming
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend buat aplikasi streaming film. Dibikin pake React + TypeScript + Vite, terus connect ke backend Laravel yang gua bikin di project sebelumnya.
 
-Currently, two official plugins are available:
+## Fitur
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Register & login (pake token)
+- Browse film, ada search sama filter
+- Pagination
+- Halaman kategori film
+- Admin panel buat CRUD movies & users (cuma admin yang bisa akses)
+- Upload thumbnail film create/update
+- Delete pake modal konfirmasi
+- Responsive desing
 
-## React Compiler
+## Tech stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Frontend:
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Router DOM v7
+- Axios (buat hit API)
+- React Toastify (buat notif)
+- Lucide React (icon)
 
-## Expanding the ESLint configuration
+Backend (project terpisah):
+- Laravel 11 + Sanctum
+- MySQL
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Run
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Pastiin backend Laravel-nya udah jalan dulu di `http://localhost:8000`. Kalo belum, clone dulu dari [distreaming](https://github.com/abdulazizdesta/distreaming).
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Lalu:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+bash
+git clone https://github.com/abdulazizdesta/belajar-react.git
+cd belajar-react
+npm install
+npm run dev
+
+Buka `http://localhost:5173` di browser.
+
+## Struktur folder
+
+```
+src/
+├── App.tsx              # Root
+├── main.tsx             # Entry point
+├── components/          # Komponen reusable (Button, Pagination, dll)
+├── contexts/            # AuthContext
+├── hooks/               # useAuth
+├── services/            # api.tsx (axios instance)
+├── routes/              # Gabungan semua routes
+└── modules/             # Per fitur
+    ├── auth/            # Login, Register
+    ├── home/            # Home page
+    ├── categories/      # Halaman kategori
+    └── adminpanel/      # Admin CRUD
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Idenya: tiap fitur punya foldernya sendiri di `modules/`, isinya page sama route-nya. Kalo ada komponen yang dipake di lebih dari 1 tempat, tempatkan di `components/`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Cara kerja auth
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. User login → backend kasih token
+2. Token disimpen di localStorage + AuthContext
+3. Setiap request ke API, axios interceptor otomatis pasang token di header
+4. Kalo mau akses halaman tertentu, dibungkus `<ProtectedRoute>`. Kalo belum login, otomatis di-redirect ke login
+
+## Routes
+
+| Path | Akses |
+|---|---|
+| `/` | Login |
+| `/register` | Register |
+| `/home` | Browse film (perlu login) |
+| `/categories` | List kategori (perlu login) |
+| `/admin/movies` | List movies (cuma admin) |
+| `/admin/movies/create` | Tambah film (cuma admin) |
+| `/admin/movies/:id/edit` | Edit film (cuma admin) |
+| `/admin/users` | List users (cuma admin) |
+| `/admin/users/:id/edit` | Edit user (cuma admin) |
+
+## Login buat testing
+
+Tergantung seeder di backend, biasanya:
+
+- Admin: `admin@mail.com` / `password`
+- User: `user@mail.com` / `password`
+
+Cek `database/seeders/UserSeeder.php` di repo backend.
+
+## Catatan
+
+- Backend wajib jalan dulu
+- Storage Laravel harus di-link biar gambar muncul: `php artisan storage:link`
+- Kalo CORS error, set `config/cors.php` di Laravel-nya, allow origin `http://localhost:5173`
+
+## Bagian menarik
+
+- **Pagination** punya logic sendiri buat naro titik-titik (...) kalo halamannya banyak.
+- **Update movie** harus pake trick `_method: PATCH` karena PHP gabisa parse multipart di method PATCH langsung. Jadi kirim sebagai POST tapi ada field `_method` di FormData-nya.
+- **Conditional spread** pas update user, password baru dikirim kalo user emang ngisi. Kalo kosong, gak dikirim sama sekali biar password lama gak ke-overwrite.
+
+## Improve
+
+- Pisahin logic API call ke service file biar gak nyampur sama component
+- Bikin custom hook `useMovies()` buat fetching
+
+## Lisensi
+
+Buat belajar aja, bebas dipake.
