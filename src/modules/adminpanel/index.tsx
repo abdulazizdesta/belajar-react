@@ -1,3 +1,5 @@
 export { default as ListMovies } from './pages/movies/ListMovies'
 export { default as StoreMovies } from './pages/movies/StoreMovies'
-// export { default as ListUsers } from './pages/users/ListUsers'
+export { default as UpdateMovies } from './pages/movies/UpdateMovies'
+export { default as ListUsers } from './pages/users/ListUsers'
+export { default as UpdateUsers } from './pages/users/UpdateUsers'

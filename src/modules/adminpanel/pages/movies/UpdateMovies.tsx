@@ -33,6 +33,7 @@ export default function UpdateMovies() {
     })
     const [categories, setCategories] = useState<Category[]>([])
     const [loading, setLoading] = useState<boolean>(false)
+    const [existingThumbnail, setExistingThumbnail] = useState<string | null>(null)
 
     const fetchMovie = async () => {
         try {
@@ -46,6 +47,8 @@ export default function UpdateMovies() {
                 category_id: String(movie.category_id),
                 thumbnail: null
             })
+            setExistingThumbnail(movie.thumbnail)
+
         } catch (error) {
             console.error(error)
         }
@@ -208,7 +211,9 @@ export default function UpdateMovies() {
                                         src={URL.createObjectURL(form.thumbnail)}
                                         className="w-full h-full object-cover"
                                     />
-                                    : <span className="text-slate-600 text-xs">No thumbnail</span>
+                                    : existingThumbnail
+                                        ? <img src={`http://localhost:8000/storage/${existingThumbnail}`} className="w-full h-full object-cover" />
+                                        : <span className="text-slate-600 text-xs">No thumbnail</span>
                                 }
                             </div>
                             {/* Info */}
