@@ -84,14 +84,14 @@ export default function Categories() {
     }, [])
 
     const tabButtonClass = (key: string) =>
-        `cursor-pointer pb-1 border-b-2 transition-colors text-sm whitespace-nowrap ${activeFilter === key
+        `cursor-pointer py-1 border-b-2 transition-colors text-sm whitespace-nowrap ${activeFilter === key
             ? "text-white border-white"
             : "text-slate-500 border-transparent hover:text-slate-300"
         }`
 
     // Search input untuk header (compact)
     const headerSearch = (
-        <div className="w-56 shrink-0">
+        <div className="w-96 shrink-0">
             <SearchInput
                 compact
                 placeholder="Search Movies"
@@ -105,7 +105,7 @@ export default function Categories() {
 
     // Category tabs scrollable
     const categoryTabs = (
-        <div className="flex gap-6 overflow-x-auto min-w-0 pb-1">
+        <div className="flex gap-6 overflow-x-auto min-w-0 py-1 scrollbar-hide">
             <button
                 key="all"
                 onClick={() => { setActiveFilter('all'); setCurrentPage(1) }}

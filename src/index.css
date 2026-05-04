@@ -4,6 +4,13 @@
 @theme {
   --font-sans: 'Inter', sans-serif;
 }
+
+@utility scrollbar-hide {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 /* * {
   margin: 0;
   padding: 0;

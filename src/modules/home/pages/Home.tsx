@@ -78,12 +78,12 @@ export default function Home() {
 
     // Filter tabs JSX — dipakai di header (desktop) dan body (mobile)
     const filterTabs = (
-        <div className="flex gap-6 md:gap-8 justify-center flex-wrap">
+        <div className="flex gap-6 overflow-x-auto min-w-0 py-1 scrollbar-hide">
             {tabs.map(tab => (
                 <button
                     key={tab.key}
                     onClick={() => { setActiveFilter(tab.key); setCurrentPage(1) }}
-                    className={`cursor-pointer pb-1 border-b-2 transition-colors text-sm ${activeFilter === tab.key
+                    className={`cursor-pointer py-1 border-b-2 transition-colors text-sm ${activeFilter === tab.key
                         ? "text-white border-white"
                         : "text-slate-500 border-transparent hover:text-slate-300"
                         }`}>
@@ -93,22 +93,44 @@ export default function Home() {
         </div>
     )
 
-    return (
-        <Layout headerSlot={filterTabs}>
-            {/* Search — selalu ditampilkan di body */}
-            <div className="max-w-md mx-auto mb-6">
-                <SearchInput
-                    placeholder="Search Movies"
-                    onSearch={(value) => {
-                        setSearch(value)
-                        setCurrentPage(1)
-                    }}
-                />
-            </div>
+    // Search input untuk header (compact)
+    const headerSearch = (
+        <div className="w-96 shrink-0">
+            <SearchInput
+                compact
+                placeholder="Search Movies"
+                onSearch={(value) => {
+                    setSearch(value)
+                    setCurrentPage(1)
+                }}
+            />
+        </div>
+    )
 
-            {/* Filter Tabs — mobile only (di desktop udah di header) */}
-            <div className="md:hidden mb-6">
-                {filterTabs}
+    // Header slot: search + tabs
+    const headerSlot = (
+        <div className="flex items-center gap-4 min-w-0 w-full">
+            {headerSearch}
+            {filterTabs}
+        </div>
+    )
+
+    return (
+        <Layout headerSlot={headerSlot}>
+            {/* Mobile body: search + tabs (di desktop udah di header) */}
+            <div className="md:hidden">
+                <div className="max-w-md mx-auto mb-4">
+                    <SearchInput
+                        placeholder="Search Movies"
+                        onSearch={(value) => {
+                            setSearch(value)
+                            setCurrentPage(1)
+                        }}
+                    />
+                </div>
+                <div className="mb-6">
+                    {filterTabs}
+                </div>
             </div>
 
             {/* Movie + Loading */}
