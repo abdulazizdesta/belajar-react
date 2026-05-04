@@ -97,7 +97,7 @@ export default function Categories() {
             </div>
 
             {/* Filter Tabs */}
-            <div className="flex gap-8 justify-center mb-6">
+            <div className="flex flex-wrap gap-4 md:gap-8 justify-center mb-6">
                 <button
                     key="all"
                     onClick={() => { setActiveFilter('all'); setCurrentPage(1) }}

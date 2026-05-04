@@ -5,7 +5,6 @@ import {
     X, ChevronDown, ChevronUp, Home,
     Bookmark,
     Users,
-    List,
     Clapperboard
 } from "lucide-react"
 
