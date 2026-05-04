@@ -105,7 +105,7 @@ export default function Categories() {
 
     // Category tabs scrollable
     const categoryTabs = (
-        <div className="flex gap-6 overflow-x-auto min-w-0 py-1 scrollbar-hide">
+        <div className="flex gap-6 overflow-x-auto min-w-0 py-1 scrollbar-hide justify-center">
             <button
                 key="all"
                 onClick={() => { setActiveFilter('all'); setCurrentPage(1) }}
@@ -133,7 +133,7 @@ export default function Categories() {
 
     return (
         <Layout headerSlot={headerSlot}>
-            {/* Mobile body: search + tabs (di desktop udah di header) */}
+            {/* Mobile body: search + tabs */}
             <div className="md:hidden">
                 <div className="max-w-md mx-auto mb-4">
                     <SearchInput

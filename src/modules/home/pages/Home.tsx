@@ -76,9 +76,9 @@ export default function Home() {
         fetchMovies(currentPage);
     }, [currentPage, activeFilter, search]);
 
-    // Filter tabs JSX — dipakai di header (desktop) dan body (mobile)
+    // Filter tabs
     const filterTabs = (
-        <div className="flex gap-6 overflow-x-auto min-w-0 py-1 scrollbar-hide">
+        <div className="flex gap-6 overflow-x-auto min-w-0 py-1 scrollbar-hide justify-center">
             {tabs.map(tab => (
                 <button
                     key={tab.key}
@@ -93,7 +93,7 @@ export default function Home() {
         </div>
     )
 
-    // Search input untuk header (compact)
+    // Search input untuk header
     const headerSearch = (
         <div className="w-96 shrink-0">
             <SearchInput
@@ -117,7 +117,7 @@ export default function Home() {
 
     return (
         <Layout headerSlot={headerSlot}>
-            {/* Mobile body: search + tabs (di desktop udah di header) */}
+            {/* Mobile body: search + tabs */}
             <div className="md:hidden">
                 <div className="max-w-md mx-auto mb-4">
                     <SearchInput
