@@ -83,39 +83,82 @@ export default function Categories() {
         fechMovieCategories()
     }, [])
 
-    return (
-        <Layout>
-            {/* Search */}
-            <div className="max-w-md mx-auto mb-6">
-                <SearchInput
-                    placeholder="Search Movies"
-                    onSearch={(value) => {
-                        setSearch(value)
-                        setCurrentPage(1)
-                    }}
-                />
-            </div>
+    const tabButtonClass = (key: string) =>
+        `cursor-pointer pb-1 border-b-2 transition-colors text-sm whitespace-nowrap ${activeFilter === key
+            ? "text-white border-white"
+            : "text-slate-500 border-transparent hover:text-slate-300"
+        }`
 
-            {/* Filter Tabs */}
-            <div className="flex flex-wrap gap-4 md:gap-8 justify-center mb-6">
+    // Search input untuk header (compact)
+    const headerSearch = (
+        <div className="w-56 shrink-0">
+            <SearchInput
+                compact
+                placeholder="Search Movies"
+                onSearch={(value) => {
+                    setSearch(value)
+                    setCurrentPage(1)
+                }}
+            />
+        </div>
+    )
+
+    // Category tabs scrollable
+    const categoryTabs = (
+        <div className="flex gap-6 overflow-x-auto min-w-0 pb-1">
+            <button
+                key="all"
+                onClick={() => { setActiveFilter('all'); setCurrentPage(1) }}
+                className={tabButtonClass('all')}>
+                All
+            </button>
+            {categories.map(category => (
                 <button
-                    key="all"
-                    onClick={() => { setActiveFilter('all'); setCurrentPage(1) }}
-                    className={`cursor-pointer pb-1 border-b-2 transition-colors ${activeFilter === 'all' ? "text-white border-white" : "text-slate-500 border-transparent hover:text-slate-300"
-                        }`}>
-                    All
+                    key={category.id}
+                    onClick={() => { setActiveFilter(String(category.id)); setCurrentPage(1) }}
+                    className={tabButtonClass(String(category.id))}>
+                    {category.name}
                 </button>
-                {categories.map(category => (
+            ))}
+        </div>
+    )
+
+    // Header slot: search + tabs
+    const headerSlot = (
+        <div className="flex items-center gap-4 min-w-0 w-full">
+            {headerSearch}
+            {categoryTabs}
+        </div>
+    )
+
+    return (
+        <Layout headerSlot={headerSlot}>
+            {/* Mobile body: search + tabs (di desktop udah di header) */}
+            <div className="md:hidden">
+                <div className="max-w-md mx-auto mb-4">
+                    <SearchInput
+                        placeholder="Search Movies"
+                        onSearch={(value) => {
+                            setSearch(value)
+                            setCurrentPage(1)
+                        }}
+                    />
+                </div>
+                <div className="flex gap-4 overflow-x-auto mb-6 pb-1">
                     <button
-                        key={category.id}
-                        onClick={() => { setActiveFilter(String(category.id)); setCurrentPage(1) }}
-                        className={`cursor-pointer pb-1 border-b-2 transition-colors ${activeFilter === String(category.id)
-                            ? "text-white border-white"
-                            : "text-slate-500 border-transparent hover:text-slate-300"
-                            }`}>
-                        {category.name}
+                        onClick={() => { setActiveFilter('all'); setCurrentPage(1) }}
+                        className={tabButtonClass('all')}>
+                        All
                     </button>
-                ))}
+                    {categories.map(category => (
+                        <button
+                            key={category.id}
+                            onClick={() => { setActiveFilter(String(category.id)); setCurrentPage(1) }}
+                            className={tabButtonClass(String(category.id))}>
+                            {category.name}
+                        </button>
+                    ))}
+                </div>
             </div>
 
             {/* Movie + Loading */}

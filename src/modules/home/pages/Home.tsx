@@ -76,9 +76,26 @@ export default function Home() {
         fetchMovies(currentPage);
     }, [currentPage, activeFilter, search]);
 
+    // Filter tabs JSX — dipakai di header (desktop) dan body (mobile)
+    const filterTabs = (
+        <div className="flex gap-6 md:gap-8 justify-center flex-wrap">
+            {tabs.map(tab => (
+                <button
+                    key={tab.key}
+                    onClick={() => { setActiveFilter(tab.key); setCurrentPage(1) }}
+                    className={`cursor-pointer pb-1 border-b-2 transition-colors text-sm ${activeFilter === tab.key
+                        ? "text-white border-white"
+                        : "text-slate-500 border-transparent hover:text-slate-300"
+                        }`}>
+                    {tab.label}
+                </button>
+            ))}
+        </div>
+    )
+
     return (
-        <Layout>
-            {/* Search */}
+        <Layout headerSlot={filterTabs}>
+            {/* Search — selalu ditampilkan di body */}
             <div className="max-w-md mx-auto mb-6">
                 <SearchInput
                     placeholder="Search Movies"
@@ -89,19 +106,9 @@ export default function Home() {
                 />
             </div>
 
-            {/* Filter Tabs */}
-            <div className="flex gap-8 justify-center mb-6">
-                {tabs.map(tab => (
-                    <button
-                        key={tab.key}
-                        onClick={() => { setActiveFilter(tab.key); setCurrentPage(1) }}
-                        className={`cursor-pointer pb-1 border-b-2 transition-colors ${activeFilter === tab.key
-                            ? "text-white border-white"
-                            : "text-slate-500 border-transparent hover:text-slate-300"
-                            }`}>
-                        {tab.label}
-                    </button>
-                ))}
+            {/* Filter Tabs — mobile only (di desktop udah di header) */}
+            <div className="md:hidden mb-6">
+                {filterTabs}
             </div>
 
             {/* Movie + Loading */}
